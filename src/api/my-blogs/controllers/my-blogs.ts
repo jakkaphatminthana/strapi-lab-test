@@ -30,13 +30,15 @@ export default {
 
   findFiltered: async (ctx, next) => {
     try {
-      const { startDate, endDate, title, authorID } = ctx.query;
+      const { startDate, endDate, title, authorID, perPage, page } = ctx.query;
 
       const data = await strapi.service("api::my-blogs.my-blogs").findFilter({
         startDate: startDate,
         endDate: endDate,
         title: title,
         authorID: authorID,
+        perPage: perPage,
+        page: page,
       });
       ctx.body = data;
     } catch (err) {

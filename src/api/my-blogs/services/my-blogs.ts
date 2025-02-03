@@ -66,9 +66,14 @@ export default {
     endDate?: string;
     title?: string;
     authorID?: number;
+    perPage?: number;
+    page?: number;
   }) {
     try {
-      const { startDate, endDate, title, authorID } = params;
+      const { startDate, endDate, title, authorID, perPage, page } = params;
+      const pageLimit = perPage || 10;
+      const pageOffset = page || 0;
+
       if (startDate && !DateUtils.isValidDate(startDate)) {
         throw new Error("Invalid startDate format");
       }
@@ -106,6 +111,8 @@ export default {
           },
         },
         where: filters,
+        limit: pageLimit,
+        offset: pageOffset,
       });
 
       if (!entries || !Array.isArray(entries)) {
@@ -115,7 +122,29 @@ export default {
       const formattedEntries: MyBlogModel[] = entries.map((item) =>
         MyBlog.toModel(item)
       );
-      return formattedEntries;
+
+      // Get total count of records that match filters
+      const totalCount = await strapi.db
+        .query("api::blog.blog")
+        .count({ filters });
+
+      // Calculate total number of pages
+      const lastPage = Math.ceil(totalCount / pageLimit);
+      const currentPage = Math.floor(pageOffset / pageLimit) + 1;
+      const previousPage = currentPage > 1 ? currentPage - 1 : null;
+      const nextPage = currentPage < lastPage ? currentPage + 1 : null;
+
+      return {
+        data: formattedEntries,
+        pagination: {
+          total: totalCount,
+          previousPage,
+          currentPage,
+          nextPage,
+          lastPage,
+          perPage: Number(pageLimit),
+        },
+      };
     } catch (error) {
       console.error("Service Error findFiltered:", error);
       throw new Error(`Service Error: ${error.message}`);
