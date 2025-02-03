@@ -3,32 +3,28 @@
  */
 
 export default {
-  myBlogs: async (ctx, next) => {
+  myBlogs: async (ctx) => {
     try {
       const data = await strapi.service("api::my-blogs.my-blogs").myBlogs();
       ctx.body = data;
     } catch (err) {
       console.error("Controller Error myBlogs: ", err);
-      ctx.badRequest("Get myBlogs error", {
-        moreDetail: err.message,
-      });
+      ctx.throw(400, "Get myBlogs error", { moreDetail: err.message });
     }
   },
 
-  findOne: async (ctx, next) => {
+  findOne: async (ctx) => {
     try {
       const { id } = ctx.params;
       const data = await strapi.service("api::my-blogs.my-blogs").findOne(id);
       ctx.body = data;
     } catch (err) {
       console.error("Controller Error myBlogs findOne: ", err);
-      ctx.badRequest("findOne myBlogs error", {
-        moreDetail: err.message,
-      });
+      ctx.throw(400, "findOne myBlogs error", { moreDetail: err.message });
     }
   },
 
-  findFiltered: async (ctx, next) => {
+  findFiltered: async (ctx) => {
     try {
       const { startDate, endDate, title, authorID, perPage, page } = ctx.query;
 
@@ -43,9 +39,7 @@ export default {
       ctx.body = data;
     } catch (err) {
       console.error("Controller Error findFiltered:", err);
-      ctx.badRequest("Error in filtering blogs", {
-        moreDetail: err.message,
-      });
+      ctx.throw(400, "filtering blogs error", { moreDetail: err.message });
     }
   },
 };
