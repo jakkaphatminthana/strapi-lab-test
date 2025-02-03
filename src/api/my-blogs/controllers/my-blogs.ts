@@ -42,4 +42,30 @@ export default {
       ctx.throw(400, "filtering blogs error", { moreDetail: err.message });
     }
   },
+
+  createBlog: async (ctx) => {
+    try {
+      const { title, description, thumbnail, detail, author } =
+        ctx.request.body;
+
+      if (!title) {
+        return ctx.badRequest("'title' is required");
+      }
+
+      const newBlog = await strapi
+        .service("api::my-blogs.my-blogs")
+        .createBlog({
+          title,
+          description,
+          thumbnail,
+          detail,
+          author,
+        });
+
+      ctx.created(newBlog);
+    } catch (err) {
+      console.error("Controller Error createBlog:", err);
+      ctx.badRequest("Error creating blog", { moreDetail: err.message });
+    }
+  },
 };

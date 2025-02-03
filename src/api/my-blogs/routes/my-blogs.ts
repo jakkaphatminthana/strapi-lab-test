@@ -19,5 +19,14 @@ export default {
         middlewares: [],
       },
     },
+    {
+      method: "POST",
+      path: "/my-blogs",
+      handler: "my-blogs.createBlog", //<api-name>.<controller-name>.<action-name>
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

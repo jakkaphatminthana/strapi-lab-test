@@ -3,7 +3,11 @@
  */
 
 import DateUtils from "../../../utils/date-util";
-import MyBlog, { MyBlogModel, RawMyBlog } from "../models/my-blogs";
+import MyBlog, {
+  CreateMyBlogReq,
+  MyBlogModel,
+  RawMyBlog,
+} from "../models/my-blogs";
 
 export default {
   async myBlogs() {
@@ -147,6 +151,26 @@ export default {
       };
     } catch (error) {
       console.error("Service Error findFiltered:", error);
+      throw new Error(`Service Error: ${error.message}`);
+    }
+  },
+
+  async createBlog(data: CreateMyBlogReq) {
+    try {
+      const newBlog = await strapi.db.query("api::blog.blog").create({
+        data: {
+          title: data.title,
+          description: data.description,
+          detail: data.detail,
+          author: data.author,
+          thumbnail: data.thumbnail,
+        },
+      });
+      //fetch data
+      const populateBlog = await this.findOne(newBlog.id);
+      return populateBlog;
+    } catch (error) {
+      console.error("Service Error createBlog:", error);
       throw new Error(`Service Error: ${error.message}`);
     }
   },

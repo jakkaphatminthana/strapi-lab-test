@@ -7,6 +7,14 @@ export interface RawMyBlog {
   author?: { id?: string; name?: string; publisher?: string };
 }
 
+export interface CreateMyBlogReq {
+  title: string;
+  description?: string;
+  thumbnail?: number;
+  detail?: any;
+  author?: number;
+}
+
 export interface MyBlogModel {
   id: number;
   title: string;
