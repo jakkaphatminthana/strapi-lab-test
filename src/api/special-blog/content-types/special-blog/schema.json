@@ -4,10 +4,11 @@
   "info": {
     "singularName": "special-blog",
     "pluralName": "special-blogs",
-    "displayName": "Special blog"
+    "displayName": "Special blog",
+    "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
@@ -18,14 +19,15 @@
       "type": "text"
     },
     "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
+      ]
     },
     "detail": {
       "type": "blocks"
