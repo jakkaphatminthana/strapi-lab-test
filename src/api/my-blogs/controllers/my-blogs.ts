@@ -68,4 +68,26 @@ export default {
       ctx.badRequest("Error creating blog", { moreDetail: err.message });
     }
   },
+
+  updateBlog: async (ctx) => {
+    try {
+      const { id } = ctx.params;
+      const { title, description, detail, author, thumbnail } =
+        ctx.request.body;
+
+      const updateBlog = await strapi
+        .service("api::my-blogs.my-blogs")
+        .updateBlog(id, {
+          title,
+          description,
+          detail,
+          author,
+          thumbnail,
+        });
+      ctx.body = updateBlog;
+    } catch (err) {
+      console.error("Controller Error updateBlog:", err);
+      ctx.badRequest("Error updating blog", { moreDetail: err.message });
+    }
+  },
 };

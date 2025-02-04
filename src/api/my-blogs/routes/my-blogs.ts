@@ -28,5 +28,14 @@ export default {
         middlewares: [],
       },
     },
+    {
+      method: "PATCH",
+      path: "/my-blogs/:id",
+      handler: "my-blogs.updateBlog",
+      config: {
+        policies: [],
+        middlewares: [],
+      },
+    },
   ],
 };

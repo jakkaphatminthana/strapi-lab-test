@@ -4,7 +4,8 @@
 
 import DateUtils from "../../../utils/date-util";
 import MyBlog, {
-  CreateMyBlogReq,
+  MyBlogCreateReq,
+  MyBlogEditReq,
   MyBlogModel,
   RawMyBlog,
 } from "../models/my-blogs";
@@ -106,6 +107,7 @@ export default {
 
       const entries = await strapi.db.query("api::blog.blog").findMany({
         select: ["id", "title", "description", "createdAt"],
+        orderBy: { createdAt: "asc" },
         populate: {
           thumbnail: {
             select: ["url"],
@@ -155,7 +157,7 @@ export default {
     }
   },
 
-  async createBlog(data: CreateMyBlogReq) {
+  async createBlog(data: MyBlogCreateReq) {
     try {
       const newBlog = await strapi.db.query("api::blog.blog").create({
         data: {
@@ -172,6 +174,29 @@ export default {
     } catch (error) {
       console.error("Service Error createBlog:", error);
       throw new Error(`Service Error: ${error.message}`);
+    }
+  },
+
+  async updateBlog(id: number, data: MyBlogEditReq) {
+    try {
+      const blog = await strapi.db
+        .query("api::blog.blog")
+        .findOne({ where: { id } });
+
+      if (!blog) {
+        throw new Error(`Blog with ID ${id} not found`);
+      }
+
+      //update data
+      await strapi.db.query("api::blog.blog").update({
+        where: { id },
+        data,
+      });
+      //fetch data
+      return this.findOne(id);
+    } catch (err) {
+      console.error("Service Error updateBlog:", err);
+      throw new Error(`Service Error: ${err.message}`);
     }
   },
 };

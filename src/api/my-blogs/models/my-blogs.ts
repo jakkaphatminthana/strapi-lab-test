@@ -7,8 +7,16 @@ export interface RawMyBlog {
   author?: { id?: string; name?: string; publisher?: string };
 }
 
-export interface CreateMyBlogReq {
+export interface MyBlogCreateReq {
   title: string;
+  description?: string;
+  thumbnail?: number;
+  detail?: any;
+  author?: number;
+}
+
+export interface MyBlogEditReq {
+  title?: string;
   description?: string;
   thumbnail?: number;
   detail?: any;
@@ -20,7 +28,7 @@ export interface MyBlogModel {
   title: string;
   description?: string;
   createdAt?: string;
-  imageUrl?: string;
+  imageUrl?: string | null;
   author?: null | {
     id: string;
     name: string;
@@ -34,7 +42,7 @@ const toModel = (raw: RawMyBlog): MyBlogModel => {
     title: raw.title || "",
     description: raw.description || "",
     createdAt: raw.createdAt || "",
-    imageUrl: raw.thumbnail?.url || "",
+    imageUrl: raw.thumbnail?.url || null,
     author: raw.author
       ? {
           id: raw.author.id,
