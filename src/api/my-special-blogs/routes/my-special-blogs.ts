@@ -5,7 +5,7 @@ export default {
       path: "/my-special-blogs",
       handler: "my-special-blogs.findFiltered", //<api-name>.<controller-name>.<action-name>
       config: {
-        policies: [],
+        policies: ["api::my-special-blogs.is-owner"],
         middlewares: [],
       },
     },
@@ -14,7 +14,7 @@ export default {
       path: "/my-special-blogs/:id",
       handler: "my-special-blogs.findOne", //<api-name>.<controller-name>.<action-name>
       config: {
-        policies: [],
+        policies: ["api::my-special-blogs.is-owner"],
         middlewares: [],
       },
     },

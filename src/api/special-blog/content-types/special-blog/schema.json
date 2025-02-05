@@ -40,9 +40,9 @@
     },
     "owner": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "oneToOne",
       "target": "plugin::users-permissions.user",
-      "inversedBy": "special_blogs"
+      "inversedBy": "special_blog"
     }
   }
 }

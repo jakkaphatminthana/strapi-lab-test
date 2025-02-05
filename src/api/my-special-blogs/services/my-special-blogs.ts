@@ -16,9 +16,11 @@ export default {
     authorID?: number;
     perPage?: number;
     page?: number;
+    userID?: number;
   }) {
     try {
-      const { startDate, endDate, title, authorID, perPage, page } = params;
+      const { startDate, endDate, title, authorID, perPage, page, userID } =
+        params;
       const pageLimit = perPage || 10;
       const pageOffset = page || 0;
 
@@ -47,6 +49,11 @@ export default {
       if (authorID) {
         filters.author = { id: { $eq: authorID } };
       }
+      if (userID) {
+        filters.owner = { id: { $eq: userID } };
+      }
+
+      console.log("🟠 userID =  ", userID);
 
       const entries = await strapi.db
         .query("api::special-blog.special-blog")
@@ -59,6 +66,9 @@ export default {
             },
             author: {
               select: ["id", "name", "publisher"],
+            },
+            owner: {
+              select: ["id"],
             },
           },
           where: filters,

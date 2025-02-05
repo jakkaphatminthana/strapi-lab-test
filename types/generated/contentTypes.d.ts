@@ -487,7 +487,7 @@ export interface ApiSpecialBlogSpecialBlog extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     owner: Schema.Attribute.Relation<
-      'manyToOne',
+      'oneToOne',
       'plugin::users-permissions.user'
     >;
     publishedAt: Schema.Attribute.DateTime;
@@ -987,8 +987,8 @@ export interface PluginUsersPermissionsUser
       'manyToOne',
       'plugin::users-permissions.role'
     >;
-    special_blogs: Schema.Attribute.Relation<
-      'oneToMany',
+    special_blog: Schema.Attribute.Relation<
+      'oneToOne',
       'api::special-blog.special-blog'
     >;
     updatedAt: Schema.Attribute.DateTime;

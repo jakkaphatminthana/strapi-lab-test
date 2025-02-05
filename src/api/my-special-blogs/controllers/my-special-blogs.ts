@@ -8,6 +8,7 @@ export default {
   findFiltered: async (ctx) => {
     try {
       const { startDate, endDate, title, authorID, perPage, page } = ctx.query;
+      console.log("🔴 ctx.query = ", ctx.query);
 
       const data = await strapi
         .service("api::my-special-blogs.my-special-blogs")
@@ -18,6 +19,7 @@ export default {
           authorID: authorID,
           perPage: perPage,
           page: page,
+          userID: ctx.state.user.id,
         });
       ctx.body = data;
     } catch (err) {
